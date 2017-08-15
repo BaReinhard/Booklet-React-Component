@@ -1,16 +1,16 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', './valuedisplay', 'prop-types'], factory);
+        define(['exports', 'react', 'prop-types', './booklet-page', '../index.css'], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('./valuedisplay'), require('prop-types'));
+        factory(exports, require('react'), require('prop-types'), require('./booklet-page'), require('../index.css'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.valuedisplay, global.propTypes);
+        factory(mod.exports, global.react, global.propTypes, global.bookletPage, global.index);
         global.index = mod.exports;
     }
-})(this, function (exports, _react, _valuedisplay, _propTypes) {
+})(this, function (exports, _react, _propTypes, _bookletPage) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -19,29 +19,15 @@
 
     var _react2 = _interopRequireDefault(_react);
 
-    var _valuedisplay2 = _interopRequireDefault(_valuedisplay);
-
     var _propTypes2 = _interopRequireDefault(_propTypes);
+
+    var _bookletPage2 = _interopRequireDefault(_bookletPage);
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
             default: obj
         };
     }
-
-    var _extends = Object.assign || function (target) {
-        for (var i = 1; i < arguments.length; i++) {
-            var source = arguments[i];
-
-            for (var key in source) {
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
-
-        return target;
-    };
 
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -91,132 +77,158 @@
         if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
     }
 
-    var style = {
-        color: 'black',
-        position: 'absolute',
-        zIndex: 500,
-        width: '400px'
-    };
+    var pageStyle = void 0;
+    var bookletPage = void 0;
 
-    var AutoComplete = function (_React$Component) {
-        _inherits(AutoComplete, _React$Component);
+    var Booklet = function (_React$Component) {
+        _inherits(Booklet, _React$Component);
 
-        function AutoComplete(props, context) {
-            _classCallCheck(this, AutoComplete);
+        function Booklet(props) {
+            _classCallCheck(this, Booklet);
 
-            var _this = _possibleConstructorReturn(this, (AutoComplete.__proto__ || Object.getPrototypeOf(AutoComplete)).call(this, props, context));
+            var _this = _possibleConstructorReturn(this, (Booklet.__proto__ || Object.getPrototypeOf(Booklet)).call(this, props));
 
-            _this.openValues = function () {
-                _this.setState({
-                    displayValues: true,
-                    running: true
-                });
-                setTimeout(function () {
-                    _this.setState({
-                        running: false
-                    });
-                }, 300);
+            bookletPage = {
+                height: '250px',
+                backgroundColor: 'grey',
+                width: '100%',
+                top: '0',
+                left: '0',
+                position: 'absolute'
             };
-
-            _this.closeValues = function (e) {
-                setTimeout(function () {
-                    if (_this.state.running) {} else {
-                        _this.setState({ displayValues: false });
-                    }
-                }, 150);
+            pageStyle = {
+                position: 'relative',
+                float: 'left',
+                width: '50%',
+                boxSizing: 'border-box',
+                height: '250px',
+                backgroundColor: 'yellow'
             };
-
-            _this.filterValues = function (value) {
-                var displayedValues = _this.props.values;
-                displayedValues = _this.props.values.filter(function (val) {
-                    return val.toLowerCase().includes(value.toLowerCase());
-                });
-                _this.setState({
-                    displayedValues: displayedValues
-                });
-            };
-
-            _this.onInput = function (event) {
-                if (!_this.state.displayValues) {
-                    _this.setState({
-                        input: event.target.value,
-                        displayValues: true
-                    });
-                } else {
-                    _this.setState({ input: event.target.value });
-                    setTimeout(function () {
-                        _this.filterValues(_this.state.input);
-                    }, 100);
-                }
-            };
-
-            _this.onEnterPress = function (e) {
-                if (e.key === 'Enter') {
-                    _this.props.onClick(_this.state.displayedValues[0]);
-                } else if (e.key === 'Escape') {
-                    _this.closeValues();
-                }
-            };
-
-            _this.onClick = function (e) {
-                _this.props.onClick(e.target.innerText);
-            };
-
-            _this.state = {
-                input: '',
-                displayValues: false,
-                displayedValues: _this.props.values
-            };
-            // Allow for Override of styles
-            style = _extends({}, style, props.style);
             return _this;
         }
-        /*eslint arrow-body-style: ["error", "always"]*/
-        /*eslint-env es6*/
 
+        _createClass(Booklet, [{
+            key: 'componentWillReceiveProps',
+            value: function componentWillReceiveProps(nextProps, nextState) {
+                var _this2 = this;
 
-        _createClass(AutoComplete, [{
+                if (nextProps.flipPageIndex > this.props.flipPageIndex) {
+                    setTimeout(function () {
+                        _this2.refs['rightPage'].classList.remove('forward');
+                        _this2.refs['rightPage-middle'].classList.remove('inverted-backward');
+
+                        _this2.props.nextPage();
+                        // this.refs['rightPage-back'].style.display = 'block';
+                    }, 3000);
+                    // this.refs['rightPage-back'].style.display = 'none';
+                    this.refs['rightPage'].classList.add('forward');
+                    this.refs['rightPage-middle'].classList.add('inverted-backward');
+                } else if (nextProps.flipPageIndex < this.props.flipPageIndex) {
+                    setTimeout(function () {
+                        _this2.refs['leftPage'].classList.remove('backward');
+                        _this2.refs['leftPage-middle'].classList.remove('inverted-forward');
+
+                        _this2.props.prevPage();
+                        // this.refs['leftPage-back'].style.display = 'block';
+                    }, 3000);
+                    // this.refs['leftPage-back'].style.display = 'none';
+
+                    this.refs['leftPage'].classList.add('backward');
+                    this.refs['leftPage-middle'].classList.add('inverted-forward');
+                } else {}
+            }
+        }, {
+            key: 'componentDidMount',
+            value: function componentDidMount() {
+                this.refs['rightPage'].classList.remove('forward');
+                this.refs['leftPage'].classList.remove('backward');
+            }
+        }, {
             key: 'render',
             value: function render() {
                 return _react2.default.createElement(
                     'div',
-                    {
-                        style: style,
-                        tabIndex: '0',
-                        className: 'autocomplete-container',
-                        onClick: this.openValues,
-                        onBlur: this.closeValues
-                    },
-                    _react2.default.createElement('input', {
-                        className: 'autocomplete-input',
-                        style: { width: '400px' },
-                        type: 'text',
-                        name: 'me',
-                        value: this.state.input,
-                        onChange: this.onInput,
-                        onKeyDown: this.onEnterPress
-                    }),
-                    _react2.default.createElement(_valuedisplay2.default, {
-                        dropdownStyle: this.props.dropdownStyle,
-                        displayValues: this.state.displayValues,
-                        valuesStyle: this.props.valuesStyle,
-                        displayedValues: this.state.displayedValues,
-                        onClick: this.onClick
-                    })
+                    { style: { width: '100%', margin: '0 auto' }, className: 'booklet' },
+                    _react2.default.createElement(
+                        'div',
+                        { style: Object.assign({}, pageStyle) },
+                        _react2.default.createElement(
+                            'div',
+                            { ref: 'leftPage-back', style: Object.assign({}, bookletPage, { zIndex: 1 }) },
+                            _react2.default.createElement(_bookletPage2.default, {
+                                pageLocation: 'right',
+                                pageContent: this.props.pages[this.props.index - 2],
+                                turnPage: this.nextPage
+                            })
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            {
+                                ref: 'leftPage-middle',
+                                style: Object.assign({}, bookletPage, { zIndex: 0, transform: 'scaleX(-1)' })
+                            },
+                            _react2.default.createElement(_bookletPage2.default, {
+                                pageLocation: 'left',
+                                pageContent: this.props.pages[this.props.index - 1],
+                                turnPage: this.previousPage
+                            })
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { ref: 'leftPage', style: Object.assign({}, bookletPage, { zIndex: 2 }) },
+                            _react2.default.createElement(_bookletPage2.default, {
+                                pageLocation: 'left',
+                                pageContent: this.props.pages[this.props.index],
+                                turnPage: this.previousPage
+                            })
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { style: Object.assign({}, pageStyle) },
+                        _react2.default.createElement(
+                            'div',
+                            { ref: 'rightPage-back', style: Object.assign({}, bookletPage, { zIndex: 0 }) },
+                            _react2.default.createElement(_bookletPage2.default, {
+                                pageLocation: 'right',
+                                pageContent: this.props.pages[this.props.index + 3],
+                                turnPage: this.nextPage
+                            })
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            {
+                                ref: 'rightPage-middle',
+                                style: Object.assign({}, bookletPage, { zIndex: 2, transform: 'scaleX(-1)' })
+                            },
+                            _react2.default.createElement(_bookletPage2.default, {
+                                pageLocation: 'right',
+                                pageContent: this.props.pages[this.props.index + 2],
+                                turnPage: this.nextPage
+                            })
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { ref: 'rightPage', style: Object.assign({}, bookletPage, { zIndex: 2 }) },
+                            _react2.default.createElement(_bookletPage2.default, {
+                                pageLocation: 'right',
+                                pageContent: this.props.pages[this.props.index + 1],
+                                turnPage: this.nextPage
+                            })
+                        )
+                    )
                 );
             }
         }]);
 
-        return AutoComplete;
+        return Booklet;
     }(_react2.default.Component);
 
-    exports.default = AutoComplete;
+    exports.default = Booklet;
 
-    AutoComplete.propTypes = {
-        values: _propTypes2.default.array.isRequired,
-        style: _propTypes2.default.object,
-        dropdownStyle: _propTypes2.default.object,
-        valuesStyle: _propTypes2.default.object,
-        onClick: _propTypes2.default.func.isRequired
+
+    Booklet.propTypes = {
+        pages: _propTypes2.default.array,
+        index: _propTypes2.default.number
     };
 });

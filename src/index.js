@@ -1,111 +1,123 @@
 import React from 'react';
-import ValuesDisplay from './valuedisplay';
 import PropTypes from 'prop-types';
-
-let style = {
-    color: 'black',
-    position: 'absolute',
-    zIndex: 500,
-    width: '400px',
-};
-export default class AutoComplete extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            input: '',
-            displayValues: false,
-            displayedValues: this.props.values,
+import BookletPage from './booklet-page';
+import '../index.css';
+let pageStyle;
+let bookletPage;
+export default class Booklet extends React.Component {
+    constructor(props) {
+        super(props);
+        bookletPage = {
+            height: '250px',
+            backgroundColor: 'grey',
+            width: '100%',
+            top: '0',
+            left: '0',
+            position: 'absolute',
         };
-        // Allow for Override of styles
-        style = { ...style, ...props.style };
+        pageStyle = {
+            position: 'relative',
+            float: 'left',
+            width: '50%',
+            boxSizing: 'border-box',
+            height: '250px',
+            backgroundColor: 'yellow',
+        };
     }
-    /*eslint arrow-body-style: ["error", "always"]*/
-    /*eslint-env es6*/
-    openValues = () => {
-        this.setState({
-            displayValues: true,
-            running: true,
-        });
-        setTimeout(() => {
-            this.setState({
-                running: false,
-            });
-        }, 300);
-    };
-    closeValues = e => {
-        setTimeout(() => {
-            if (this.state.running) {
-            } else {
-                this.setState({ displayValues: false });
-            }
-        }, 150);
-    };
 
-    filterValues = value => {
-        let displayedValues = this.props.values;
-        displayedValues = this.props.values.filter(val => {
-            return val.toLowerCase().includes(value.toLowerCase());
-        });
-        this.setState({
-            displayedValues: displayedValues,
-        });
-    };
-    onInput = event => {
-        if (!this.state.displayValues) {
-            this.setState({
-                input: event.target.value,
-                displayValues: true,
-            });
-        } else {
-            this.setState({ input: event.target.value });
+    componentWillReceiveProps(nextProps, nextState) {
+        if (nextProps.flipPageIndex > this.props.flipPageIndex) {
             setTimeout(() => {
-                this.filterValues(this.state.input);
-            }, 100);
+                this.refs['rightPage'].classList.remove('forward');
+                this.refs['rightPage-middle'].classList.remove('inverted-backward');
+
+                this.props.nextPage();
+                // this.refs['rightPage-back'].style.display = 'block';
+            }, 3000);
+            // this.refs['rightPage-back'].style.display = 'none';
+            this.refs['rightPage'].classList.add('forward');
+            this.refs['rightPage-middle'].classList.add('inverted-backward');
+        } else if (nextProps.flipPageIndex < this.props.flipPageIndex) {
+            setTimeout(() => {
+                this.refs['leftPage'].classList.remove('backward');
+                this.refs['leftPage-middle'].classList.remove('inverted-forward');
+
+                this.props.prevPage();
+                // this.refs['leftPage-back'].style.display = 'block';
+            }, 3000);
+            // this.refs['leftPage-back'].style.display = 'none';
+
+            this.refs['leftPage'].classList.add('backward');
+            this.refs['leftPage-middle'].classList.add('inverted-forward');
+        } else {
         }
-    };
-    onEnterPress = e => {
-        if (e.key === 'Enter') {
-            this.props.onClick(this.state.displayedValues[0]);
-        } else if (e.key === 'Escape') {
-            this.closeValues();
-        }
-    };
-    onClick = e => {
-        this.props.onClick(e.target.innerText);
-    };
+    }
+    componentDidMount() {
+        this.refs['rightPage'].classList.remove('forward');
+        this.refs['leftPage'].classList.remove('backward');
+    }
+
     render() {
         return (
-            <div
-                style={style}
-                tabIndex="0"
-                className="autocomplete-container"
-                onClick={this.openValues}
-                onBlur={this.closeValues}
-            >
-                <input
-                    className="autocomplete-input"
-                    style={{ width: '400px' }}
-                    type="text"
-                    name="me"
-                    value={this.state.input}
-                    onChange={this.onInput}
-                    onKeyDown={this.onEnterPress}
-                />
-                <ValuesDisplay
-                    dropdownStyle={this.props.dropdownStyle}
-                    displayValues={this.state.displayValues}
-                    valuesStyle={this.props.valuesStyle}
-                    displayedValues={this.state.displayedValues}
-                    onClick={this.onClick}
-                />
+            <div style={{ width: '100%', margin: '0 auto' }} className="booklet">
+                <div style={Object.assign({}, pageStyle)}>
+                    <div ref={'leftPage-back'} style={Object.assign({}, bookletPage, { zIndex: 1 })}>
+                        <BookletPage
+                            pageLocation={'right'}
+                            pageContent={this.props.pages[this.props.index - 2]}
+                            turnPage={this.nextPage}
+                        />
+                    </div>
+                    <div
+                        ref={'leftPage-middle'}
+                        style={Object.assign({}, bookletPage, { zIndex: 0, transform: 'scaleX(-1)' })}
+                    >
+                        <BookletPage
+                            pageLocation={'left'}
+                            pageContent={this.props.pages[this.props.index - 1]}
+                            turnPage={this.previousPage}
+                        />
+                    </div>
+                    <div ref={'leftPage'} style={Object.assign({}, bookletPage, { zIndex: 2 })}>
+                        <BookletPage
+                            pageLocation={'left'}
+                            pageContent={this.props.pages[this.props.index]}
+                            turnPage={this.previousPage}
+                        />
+                    </div>
+                </div>
+                <div style={Object.assign({}, pageStyle)}>
+                    <div ref={'rightPage-back'} style={Object.assign({}, bookletPage, { zIndex: 0 })}>
+                        <BookletPage
+                            pageLocation={'right'}
+                            pageContent={this.props.pages[this.props.index + 3]}
+                            turnPage={this.nextPage}
+                        />
+                    </div>
+                    <div
+                        ref={'rightPage-middle'}
+                        style={Object.assign({}, bookletPage, { zIndex: 2, transform: 'scaleX(-1)' })}
+                    >
+                        <BookletPage
+                            pageLocation={'right'}
+                            pageContent={this.props.pages[this.props.index + 2]}
+                            turnPage={this.nextPage}
+                        />
+                    </div>
+                    <div ref={'rightPage'} style={Object.assign({}, bookletPage, { zIndex: 2 })}>
+                        <BookletPage
+                            pageLocation={'right'}
+                            pageContent={this.props.pages[this.props.index + 1]}
+                            turnPage={this.nextPage}
+                        />
+                    </div>
+                </div>
             </div>
         );
     }
 }
-AutoComplete.propTypes = {
-    values: PropTypes.array.isRequired,
-    style: PropTypes.object,
-    dropdownStyle: PropTypes.object,
-    valuesStyle: PropTypes.object,
-    onClick: PropTypes.func.isRequired,
+
+Booklet.propTypes = {
+    pages: PropTypes.array,
+    index: PropTypes.number,
 };

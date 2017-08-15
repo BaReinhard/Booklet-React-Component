@@ -1,6 +1,6 @@
 {
     "name": "booklet-react-component",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A simple react booklet component that looks like a booklet and has page turning capabilities",
     "main": "index.js",
     "directories": {
@@ -18,12 +18,7 @@
         "type": "git",
         "url": "git+https://github.com/bareinhard/Booklet-React-Component.git"
     },
-    "keywords": [
-        "React",
-        "React",
-        "Component",
-        "reactjs"
-    ],
+    "keywords": ["React", "React", "Component", "reactjs"],
     "author": "Brett Reinhard <brett@reinhards.us> (http://brettreinhard.com)",
     "license": "MIT",
     "bugs": {
