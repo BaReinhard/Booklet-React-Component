@@ -1,13 +1,13 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', 'prop-types', './booklet-page', './shadow.png', './shadow-top-back.png'], factory);
+        define(['exports', 'react', 'prop-types', './booklet-page', './shadow.png', './shadow-top-back.png', '../index.css'], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('prop-types'), require('./booklet-page'), require('./shadow.png'), require('./shadow-top-back.png'));
+        factory(exports, require('react'), require('prop-types'), require('./booklet-page'), require('./shadow.png'), require('./shadow-top-back.png'), require('../index.css'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.propTypes, global.bookletPage, global.shadow, global.shadowTopBack);
+        factory(mod.exports, global.react, global.propTypes, global.bookletPage, global.shadow, global.shadowTopBack, global.index);
         global.index = mod.exports;
     }
 })(this, function (exports, _react, _propTypes, _bookletPage, _shadow, _shadowTopBack) {
@@ -90,25 +90,7 @@
         function Booklet(props) {
             _classCallCheck(this, Booklet);
 
-            var _this = _possibleConstructorReturn(this, (Booklet.__proto__ || Object.getPrototypeOf(Booklet)).call(this, props));
-
-            bookletPage = {
-                height: '250px',
-                backgroundColor: 'white',
-                width: '100%',
-                top: '0',
-                left: '0',
-                position: 'absolute'
-            };
-            pageStyle = {
-                position: 'relative',
-                float: 'left',
-                width: '50%',
-                boxSizing: 'border-box',
-                height: '250px',
-                backgroundColor: 'yellow'
-            };
-            return _this;
+            return _possibleConstructorReturn(this, (Booklet.__proto__ || Object.getPrototypeOf(Booklet)).call(this, props));
         }
 
         _createClass(Booklet, [{
@@ -116,143 +98,94 @@
             value: function componentWillReceiveProps(nextProps, nextState) {
                 var _this2 = this;
 
+                this.refs['page3'].classList.remove('turn-back');
+                this.refs['page3b'].classList.remove('turn-back-3b');
+                this.refs['page4'].classList.remove('turn');
+                this.refs['page1'].classList.remove('turn-open-1');
                 if (nextProps.flipPageIndex > this.props.flipPageIndex) {
                     setTimeout(function () {
-                        _this2.refs['rightPage'].classList.remove('forward');
-                        _this2.refs['rightPage-middle'].classList.remove('inverted-backward');
-
                         _this2.props.nextPage();
                         // this.refs['rightPage-back'].style.display = 'block';
                     }, 3005);
                     // this.refs['rightPage-back'].style.display = 'none';
-                    this.refs['rightPage'].classList.add('forward');
-                    this.refs['rightPage-middle'].classList.add('inverted-backward');
+
+                    this.refs['page3'].classList.add('turn-back');
+                    this.refs['page3b'].classList.add('turn-back-3b');
                 } else if (nextProps.flipPageIndex < this.props.flipPageIndex) {
+                    console.log('this happened');
                     setTimeout(function () {
-                        _this2.refs['leftPage'].classList.remove('backward');
-                        _this2.refs['leftPage-middle'].classList.remove('inverted-forward');
-
                         _this2.props.prevPage();
-                        // this.refs['leftPage-back'].style.display = 'block';
-                    }, 3500);
+                    }, 3000);
+                    this.refs['page4'].classList.add('turn');
+                    this.refs['page1'].classList.add('turn-open-1');
                     // this.refs['leftPage-back'].style.display = 'none';
-
-                    this.refs['leftPage'].classList.add('backward');
-                    this.refs['leftPage-middle'].classList.add('inverted-forward');
                 } else {}
             }
         }, {
             key: 'componentDidMount',
-            value: function componentDidMount() {
-                this.refs['rightPage'].classList.remove('forward');
-                this.refs['leftPage'].classList.remove('backward');
-            }
+            value: function componentDidMount() {}
         }, {
             key: 'render',
             value: function render() {
                 return _react2.default.createElement(
                     'div',
-                    {
-                        style: {
-                            width: '100%',
-                            height: '250px',
-                            color: 'black',
-                            backgroundColor: 'rgba(255,0,0,0.5)',
-                            padding: '5px',
-                            margin: '0 auto',
-                            borderWidth: '3px',
-                            borderStyle: 'solid',
-                            borderRadius: '3px',
-                            borderImage: 'url(' + _shadowTopBack2.default + ') 25% round'
-                        },
-                        className: 'booklet'
-                    },
+                    { className: 'book' },
                     _react2.default.createElement(
                         'div',
-                        { style: Object.assign({}, pageStyle) },
-                        _react2.default.createElement(
-                            'div',
-                            { ref: 'leftPage-back', style: Object.assign({}, bookletPage, { zIndex: 1 }) },
-                            _react2.default.createElement(_bookletPage2.default, {
-                                pageLocation: 'right',
-                                pageContent: this.props.pages[this.props.index - 2],
-                                turnPage: this.nextPage
-                            })
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            {
-                                ref: 'leftPage-middle',
-                                style: Object.assign({}, bookletPage, { zIndex: 0, transform: 'scaleX(-1)' })
-                            },
-                            _react2.default.createElement(_bookletPage2.default, {
-                                pageLocation: 'left',
-                                pageContent: this.props.pages[this.props.index - 1],
-                                turnPage: this.previousPage
-                            })
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { ref: 'leftPage', style: Object.assign({}, bookletPage, { zIndex: 2 }) },
-                            _react2.default.createElement(_bookletPage2.default, {
-                                pageLocation: 'left',
-                                pageContent: this.props.pages[this.props.index],
-                                turnPage: this.previousPage
-                            })
-                        )
+                        { ref: 'page2', className: 'pagelast' },
+                        _react2.default.createElement(_bookletPage2.default, {
+                            pageLocation: 'right',
+                            pageContent: this.props.pages[this.props.index + 3],
+                            turnPage: this.nextPage
+                        })
                     ),
-                    _react2.default.createElement('img', {
-                        src: _shadow2.default,
-                        style: {
-                            position: 'absolute',
-                            left: 0,
-                            right: 0,
-                            margin: '0 auto',
-                            width: '20px',
-                            height: '250px',
-                            zIndex: 4,
-                            opacity: '0.7'
-                        }
-                    }),
                     _react2.default.createElement(
                         'div',
-                        { style: Object.assign({}, pageStyle) },
-                        _react2.default.createElement(
-                            'div',
-                            { ref: 'rightPage-back', style: Object.assign({}, bookletPage, { zIndex: 0 }) },
-                            _react2.default.createElement(_bookletPage2.default, {
-                                pageLocation: 'right',
-                                pageContent: this.props.pages[this.props.index + 3],
-                                turnPage: this.nextPage
-                            })
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            {
-                                ref: 'rightPage-middle',
-                                style: Object.assign({}, bookletPage, { zIndex: 2, transform: 'scaleX(-1)' })
-                            },
-                            _react2.default.createElement(_bookletPage2.default, {
-                                pageLocation: 'right',
-                                pageContent: this.props.pages[this.props.index + 2],
-                                turnPage: this.nextPage
-                            })
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            {
-                                ref: 'rightPage',
-                                style: Object.assign({}, bookletPage, {
-                                    zIndex: 2
-                                })
-                            },
-                            _react2.default.createElement(_bookletPage2.default, {
-                                pageLocation: 'right',
-                                pageContent: this.props.pages[this.props.index + 1],
-                                turnPage: this.nextPage
-                            })
-                        )
-                    )
+                        { ref: 'page3b', className: 'page' },
+                        _react2.default.createElement(_bookletPage2.default, {
+                            pageLocation: 'right',
+                            pageContent: this.props.pages[this.props.index + 2],
+                            turnPage: this.nextPage
+                        })
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { ref: 'page3', style: {}, className: 'page3' },
+                        _react2.default.createElement(_bookletPage2.default, {
+                            pageLocation: 'right',
+                            pageContent: this.props.pages[this.props.index + 1],
+                            turnPage: this.nextPage
+                        })
+                    ),
+                    _react2.default.createElement('div', { className: 'cover' }),
+                    _react2.default.createElement(
+                        'div',
+                        { ref: 'page1', className: 'page' },
+                        _react2.default.createElement(_bookletPage2.default, {
+                            pageLocation: 'right',
+                            pageContent: this.props.pages[this.props.index - 2],
+                            turnPage: this.nextPage
+                        })
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { ref: 'page1', className: 'page1' },
+                        _react2.default.createElement(_bookletPage2.default, {
+                            pageLocation: 'right',
+                            pageContent: this.props.pages[this.props.index - 1],
+                            turnPage: this.nextPage
+                        })
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { ref: 'page4', className: 'page' },
+                        _react2.default.createElement(_bookletPage2.default, {
+                            pageLocation: 'right',
+                            pageContent: this.props.pages[this.props.index],
+                            turnPage: this.nextPage
+                        })
+                    ),
+                    _react2.default.createElement('div', { className: 'cover turn' })
                 );
             }
         }]);

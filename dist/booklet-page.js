@@ -34,37 +34,13 @@
 
     function BookletPage(props) {
         var content = void 0;
-        if (props.pageLocation === 'left') {
-            content = _react2.default.createElement(
-                'div',
-                {
-                    style: Object.assign({}, {
-                        background: 'url(' + _tanSpongedBackground2.default + ') ',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundSize: 'cover',
-                        height: '250px',
-                        boxShadow: '10px 5px 15px #000'
-                    }, props.style),
-                    id: props.customId
-                },
-                props.pageContent
-            );
-        } else {
-            content = _react2.default.createElement(
-                'div',
-                {
-                    style: Object.assign({}, {
-                        background: 'url(' + _tanSpongedBackground2.default + ') ',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundSize: 'cover',
-                        height: '250px',
-                        boxShadow: '10px 5px 15px #000'
-                    }, props.style),
-                    id: props.customId
-                },
-                props.pageContent
-            );
-        }
+
+        content = _react2.default.createElement(
+            'div',
+            { style: Object.assign({}, { textAlign: 'left', alignContent: 'left' }, props.style), id: props.customId },
+            props.pageContent
+        );
+
         return content;
     }
     BookletPage.propTypes = {

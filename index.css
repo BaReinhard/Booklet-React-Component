@@ -1,82 +1,149 @@
+html {
+    font-size: 20px;
+}
 body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
+    background-color: #4f4e68;
 }
-
-.forward {
-    animation: booklet-forward;
-    animation-duration: 3s;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: 1;
-    z-index: 5 !important;
+.book {
     position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto auto auto 50%;
+    width: 37rem;
+    height: 12.5rem;
+    perspective: 70rem;
 }
-.backward {
-    animation: booklet-backward;
-    animation-duration: 3s;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: 1;
-    z-index: 5 !important;
+.cover {
+    background-color: #36354e;
+    transform: rotateY(0deg);
+    width: 18.5rem;
+    height: 12.5rem;
+}
+.page,
+.page3,
+.page1,
+.pagelast {
+    top: 0.25rem;
+    left: 0.6rem;
+    background-color: #e9e6c4;
+    transform: rotateY(0deg);
+    width: 18rem;
+    height: 12rem;
+    text-align: right;
+    font-size: 8px;
+    color: #777;
+    font-family: monospace;
+}
+
+.pagelast {
     position: absolute;
+    padding: 1rem;
+    transform-origin: 100% 0;
+    border-radius: 5px 0 0 5px;
+    box-shadow: inset 3px 0px 20px rgba(0, 0, 0, 0.2), 0px 0px 15px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    z-index: 100;
 }
-.inverted-backward {
-    animation: booklet-backward-invert;
-    animation-duration: 3s;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: 1;
-    z-index: 5;
+.cover,
+.page {
+    position: absolute;
+    padding: 1rem;
+    margin-left: -48%;
+    transform-origin: 100% 0;
+    border-radius: 5px 0 0 5px;
+    box-shadow: inset 3px 0px 20px rgba(0, 0, 0, 0.2), 0px 0px 15px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
-.inverted-forward {
-    animation: booklet-forward-invert;
-    animation-duration: 3s;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: 1;
-    z-index: 5;
-}
-@keyframes booklet-backward-invert {
-    from {
-        transform: rotateY(0deg) scaleX(-1);
-        z-index: 6 !important;
-        box-shadow: 0px 10px 5px #000;
-    }
-
-    to {
-        z-index: 8;
-        transform: rotateY(180deg) translateX(100%) scaleX(-1);
-        box-shadow: 10px 10px 30px #000;
-    }
-}
-@keyframes booklet-forward-invert {
-    from {
-        transform: rotateY(0deg)scaleX(-1);
-        z-index: 6 !important;
-        box-shadow: 10px 10px 5px #000;
-    }
-    to {
-        z-index: 9;
-        transform: rotateY(-180deg) translateX(-100%)scaleX(-1);
-        box-shadow: 10px 10px 30px #000;
-    }
+.page3 {
+    position: absolute;
+    padding: 1rem;
+    transform-origin: 0% 0;
+    border-radius: 5px 0 0 5px;
+    box-shadow: inset 3px 0px 20px rgba(0, 0, 0, 0.2), 0px 0px 15px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    z-index: 997;
 }
 
-@keyframes booklet-forward {
-    from {
-        transform: rotateY(0deg);
-        box-shadow: 10px 10px 5px #000;
+.page1 {
+    position: absolute;
+    padding: 1rem;
+    transform-origin: 0 0 !important;
+    border-radius: 5px 0 0 5px;
+    box-shadow: inset 3px 0px 20px rgba(0, 0, 0, 0.2), 0px 0px 15px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    transform: rotateY(-180deg);
+}
+.cover.turn {
+    transform: rotateY(180deg);
+    z-index: 99;
+}
+.page.turn,
+.page3.turn {
+    animation: bookOpen 3s forwards;
+}
+.turn-back {
+    animation: bookClose 3s forwards;
+}
+.turn-back-3b {
+    animation: bookClose3b 3s forwards;
+}
+.page:nth-of-type(1) {
+}
+.page:nth-of-type(2) {
+    transform: rotateY(180deg);
+    z-index: 997;
+}
+.page:nth-of-type(3) {
+    z-index: 998;
+}
+.horizontal {
+    transform: scaleX(-1) translateX(100%);
+}
+.turn-open-1 {
+    animation: bookOpen1 3s forwards;
+}
+
+@keyframes bookOpen {
+    30% {
+        z-index: 998;
     }
-    to {
-        transform: rotateY(-180deg) translateX(100%);
-        box-shadow: 10px 10px 30px #000;
+    100% {
+        transform: rotateY(180deg);
+        z-index: 998;
     }
 }
-@keyframes booklet-backward {
-    from {
-        transform: rotateY(0deg);
-        box-shadow: -1em 10px -30px #000;
+@keyframes bookClose {
+    30% {
+        z-index: 999;
     }
-    to {
-        transform: rotateY(180deg) translateX(-100%);
-        box-shadow: 10px 10px 5px #000;
+    100% {
+        transform: rotateY(-180deg);
+        z-index: 999;
+    }
+}
+@keyframes bookOpen1 {
+    100% {
+        transform: rotateY(0deg);
+        z-index: 1000;
+    }
+}
+@keyframes bookClose3b {
+    50% {
+        z-index: 1000;
+    }
+    100% {
+        transform: rotateY(0deg);
+        z-index: 1000;
+    }
+}
+@keyframes bookCover {
+    30% {
+        z-index: 999;
+    }
+    100% {
+        transform: rotateY(180deg);
+        z-index: 1;
     }
 }
