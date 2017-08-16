@@ -1,15 +1,13 @@
 import expect from 'expect';
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import Booklet from './booklet';
-let props = {};
-function setup(bool) {
-    
-    return shallow(<Booklet  />);
+import TestUtils from 'react-addons-test-utils';
+import BookletPage from './booklet-page';
+function setup() {
+    return shallow(<BookletPage />);
 }
-describe('Test Booklet Mounts ', () => {
+describe('BookletPage Testing', () => {
     it('', () => {
-        
+        const wrapper = setup();
     });
-    
 });
