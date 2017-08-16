@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import BookletPage from './booklet-page';
-import '../index.css';
+import Image from './shadow.png';
+import Border from './shadow-top-back.png';
 let pageStyle;
 let bookletPage;
 export default class Booklet extends React.Component {
@@ -9,7 +10,7 @@ export default class Booklet extends React.Component {
         super(props);
         bookletPage = {
             height: '250px',
-            backgroundColor: 'grey',
+            backgroundColor: 'white',
             width: '100%',
             top: '0',
             left: '0',
@@ -33,7 +34,7 @@ export default class Booklet extends React.Component {
 
                 this.props.nextPage();
                 // this.refs['rightPage-back'].style.display = 'block';
-            }, 3000);
+            }, 3005);
             // this.refs['rightPage-back'].style.display = 'none';
             this.refs['rightPage'].classList.add('forward');
             this.refs['rightPage-middle'].classList.add('inverted-backward');
@@ -44,7 +45,7 @@ export default class Booklet extends React.Component {
 
                 this.props.prevPage();
                 // this.refs['leftPage-back'].style.display = 'block';
-            }, 3000);
+            }, 3500);
             // this.refs['leftPage-back'].style.display = 'none';
 
             this.refs['leftPage'].classList.add('backward');
@@ -59,7 +60,21 @@ export default class Booklet extends React.Component {
 
     render() {
         return (
-            <div style={{ width: '100%', margin: '0 auto' }} className="booklet">
+            <div
+                style={{
+                    width: '100%',
+                    height: '250px',
+                    color: 'black',
+                    backgroundColor: 'rgba(255,0,0,0.5)',
+                    padding: '5px',
+                    margin: '0 auto',
+                    borderWidth: '3px',
+                    borderStyle: 'solid',
+                    borderRadius: '3px',
+                    borderImage: `url(${Border}) 25% round`,
+                }}
+                className="booklet"
+            >
                 <div style={Object.assign({}, pageStyle)}>
                     <div ref={'leftPage-back'} style={Object.assign({}, bookletPage, { zIndex: 1 })}>
                         <BookletPage
@@ -86,6 +101,19 @@ export default class Booklet extends React.Component {
                         />
                     </div>
                 </div>
+                <img
+                    src={Image}
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        margin: '0 auto',
+                        width: '20px',
+                        height: '250px',
+                        zIndex: 4,
+                        opacity: '0.7',
+                    }}
+                />
                 <div style={Object.assign({}, pageStyle)}>
                     <div ref={'rightPage-back'} style={Object.assign({}, bookletPage, { zIndex: 0 })}>
                         <BookletPage
@@ -104,7 +132,12 @@ export default class Booklet extends React.Component {
                             turnPage={this.nextPage}
                         />
                     </div>
-                    <div ref={'rightPage'} style={Object.assign({}, bookletPage, { zIndex: 2 })}>
+                    <div
+                        ref={'rightPage'}
+                        style={Object.assign({}, bookletPage, {
+                            zIndex: 2,
+                        })}
+                    >
                         <BookletPage
                             pageLocation={'right'}
                             pageContent={this.props.pages[this.props.index + 1]}

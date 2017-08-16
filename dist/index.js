@@ -1,16 +1,16 @@
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', 'prop-types', './booklet-page', '../index.css'], factory);
+        define(['exports', 'react', 'prop-types', './booklet-page', './shadow.png', './shadow-top-back.png'], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('prop-types'), require('./booklet-page'), require('../index.css'));
+        factory(exports, require('react'), require('prop-types'), require('./booklet-page'), require('./shadow.png'), require('./shadow-top-back.png'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.propTypes, global.bookletPage, global.index);
+        factory(mod.exports, global.react, global.propTypes, global.bookletPage, global.shadow, global.shadowTopBack);
         global.index = mod.exports;
     }
-})(this, function (exports, _react, _propTypes, _bookletPage) {
+})(this, function (exports, _react, _propTypes, _bookletPage, _shadow, _shadowTopBack) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -22,6 +22,10 @@
     var _propTypes2 = _interopRequireDefault(_propTypes);
 
     var _bookletPage2 = _interopRequireDefault(_bookletPage);
+
+    var _shadow2 = _interopRequireDefault(_shadow);
+
+    var _shadowTopBack2 = _interopRequireDefault(_shadowTopBack);
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -90,7 +94,7 @@
 
             bookletPage = {
                 height: '250px',
-                backgroundColor: 'grey',
+                backgroundColor: 'white',
                 width: '100%',
                 top: '0',
                 left: '0',
@@ -119,7 +123,7 @@
 
                         _this2.props.nextPage();
                         // this.refs['rightPage-back'].style.display = 'block';
-                    }, 3000);
+                    }, 3005);
                     // this.refs['rightPage-back'].style.display = 'none';
                     this.refs['rightPage'].classList.add('forward');
                     this.refs['rightPage-middle'].classList.add('inverted-backward');
@@ -130,7 +134,7 @@
 
                         _this2.props.prevPage();
                         // this.refs['leftPage-back'].style.display = 'block';
-                    }, 3000);
+                    }, 3500);
                     // this.refs['leftPage-back'].style.display = 'none';
 
                     this.refs['leftPage'].classList.add('backward');
@@ -148,7 +152,21 @@
             value: function render() {
                 return _react2.default.createElement(
                     'div',
-                    { style: { width: '100%', margin: '0 auto' }, className: 'booklet' },
+                    {
+                        style: {
+                            width: '100%',
+                            height: '250px',
+                            color: 'black',
+                            backgroundColor: 'rgba(255,0,0,0.5)',
+                            padding: '5px',
+                            margin: '0 auto',
+                            borderWidth: '3px',
+                            borderStyle: 'solid',
+                            borderRadius: '3px',
+                            borderImage: 'url(' + _shadowTopBack2.default + ') 25% round'
+                        },
+                        className: 'booklet'
+                    },
                     _react2.default.createElement(
                         'div',
                         { style: Object.assign({}, pageStyle) },
@@ -183,6 +201,19 @@
                             })
                         )
                     ),
+                    _react2.default.createElement('img', {
+                        src: _shadow2.default,
+                        style: {
+                            position: 'absolute',
+                            left: 0,
+                            right: 0,
+                            margin: '0 auto',
+                            width: '20px',
+                            height: '250px',
+                            zIndex: 4,
+                            opacity: '0.7'
+                        }
+                    }),
                     _react2.default.createElement(
                         'div',
                         { style: Object.assign({}, pageStyle) },
@@ -209,7 +240,12 @@
                         ),
                         _react2.default.createElement(
                             'div',
-                            { ref: 'rightPage', style: Object.assign({}, bookletPage, { zIndex: 2 }) },
+                            {
+                                ref: 'rightPage',
+                                style: Object.assign({}, bookletPage, {
+                                    zIndex: 2
+                                })
+                            },
                             _react2.default.createElement(_bookletPage2.default, {
                                 pageLocation: 'right',
                                 pageContent: this.props.pages[this.props.index + 1],
