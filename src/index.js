@@ -40,8 +40,9 @@ export default class Booklet extends React.Component {
 
     render() {
         return (
-            <div className="book">
-                <div ref={'page2'} className="pagelast">
+            <div className="book booklet-container">
+                {/* Right Page on Next" */}
+                <div ref={'page2'} className="pagelast booklet-next-right">
                     <BookletPage
                         pageLocation={'right'}
                         pageContent={this.props.pages[this.props.index + 3]}
@@ -49,7 +50,7 @@ export default class Booklet extends React.Component {
                     />
                 </div>
                 {/* Left Page on Next */}
-                <div ref={'page3b'} className="page">
+                <div ref={'page3b'} className="page booklet-next-left">
                     <BookletPage
                         pageLocation={'right'}
                         pageContent={this.props.pages[this.props.index + 2]}
@@ -57,7 +58,7 @@ export default class Booklet extends React.Component {
                     />
                 </div>
                 {/* Right Page on Current */}
-                <div ref={'page3'} style={{}} className="page3">
+                <div ref={'page3'} style={{}} className="page3 booklet-current-right">
                     <BookletPage
                         pageLocation={'right'}
                         pageContent={this.props.pages[this.props.index + 1]}
@@ -67,7 +68,7 @@ export default class Booklet extends React.Component {
 
                 <div className="cover" />
                 {/* Left Page on Previous */}
-                <div ref={'page1'} className="page">
+                <div ref={'page1'} className="page booklet-previous-left">
                     <BookletPage
                         pageLocation={'right'}
                         pageContent={this.props.pages[this.props.index - 2]}
@@ -75,7 +76,7 @@ export default class Booklet extends React.Component {
                     />
                 </div>
                 {/* Right Page on Previous */}
-                <div ref={'page1'} className="page1">
+                <div ref={'page1'} className="page1 booklet-previous-right">
                     <BookletPage
                         pageLocation={'right'}
                         pageContent={this.props.pages[this.props.index - 1]}
@@ -83,7 +84,7 @@ export default class Booklet extends React.Component {
                     />
                 </div>
                 {/* Left Page on Current */}
-                <div ref={'page4'} className="page">
+                <div ref={'page4'} className="page booklet-current-left">
                     <BookletPage
                         pageLocation={'right'}
                         pageContent={this.props.pages[this.props.index]}

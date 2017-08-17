@@ -129,10 +129,10 @@
             value: function render() {
                 return _react2.default.createElement(
                     'div',
-                    { className: 'book' },
+                    { className: 'book booklet-container' },
                     _react2.default.createElement(
                         'div',
-                        { ref: 'page2', className: 'pagelast' },
+                        { ref: 'page2', className: 'pagelast booklet-next-right' },
                         _react2.default.createElement(_bookletPage2.default, {
                             pageLocation: 'right',
                             pageContent: this.props.pages[this.props.index + 3],
@@ -141,7 +141,7 @@
                     ),
                     _react2.default.createElement(
                         'div',
-                        { ref: 'page3b', className: 'page' },
+                        { ref: 'page3b', className: 'page booklet-next-left' },
                         _react2.default.createElement(_bookletPage2.default, {
                             pageLocation: 'right',
                             pageContent: this.props.pages[this.props.index + 2],
@@ -150,7 +150,7 @@
                     ),
                     _react2.default.createElement(
                         'div',
-                        { ref: 'page3', style: {}, className: 'page3' },
+                        { ref: 'page3', style: {}, className: 'page3 booklet-current-right' },
                         _react2.default.createElement(_bookletPage2.default, {
                             pageLocation: 'right',
                             pageContent: this.props.pages[this.props.index + 1],
@@ -160,7 +160,7 @@
                     _react2.default.createElement('div', { className: 'cover' }),
                     _react2.default.createElement(
                         'div',
-                        { ref: 'page1', className: 'page' },
+                        { ref: 'page1', className: 'page booklet-previous-left' },
                         _react2.default.createElement(_bookletPage2.default, {
                             pageLocation: 'right',
                             pageContent: this.props.pages[this.props.index - 2],
@@ -169,7 +169,7 @@
                     ),
                     _react2.default.createElement(
                         'div',
-                        { ref: 'page1', className: 'page1' },
+                        { ref: 'page1', className: 'page1 booklet-previous-right' },
                         _react2.default.createElement(_bookletPage2.default, {
                             pageLocation: 'right',
                             pageContent: this.props.pages[this.props.index - 1],
@@ -178,7 +178,7 @@
                     ),
                     _react2.default.createElement(
                         'div',
-                        { ref: 'page4', className: 'page' },
+                        { ref: 'page4', className: 'page booklet-current-left' },
                         _react2.default.createElement(_bookletPage2.default, {
                             pageLocation: 'right',
                             pageContent: this.props.pages[this.props.index],
