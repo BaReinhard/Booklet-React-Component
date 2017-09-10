@@ -197,3 +197,8 @@ html {
 .cover.turn {
     z-index: 0 !important;
 }
+.booklet-current-right,
+.booklet-previous-right,
+.booklet-next-right {
+    overflow: scroll;
+}

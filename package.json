@@ -1,6 +1,6 @@
 {
     "name": "booklet-react-component",
-    "version": "0.0.9",
+    "version": "0.1.0",
     "description": "A simple react booklet component that looks like a booklet and has page turning capabilities",
     "main": "index.js",
     "directories": {
